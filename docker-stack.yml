@@ -10,7 +10,7 @@ networks:
 services:
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.14.0
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -33,7 +33,7 @@ services:
         condition: on-failure
 
   node-exporter:
-    image: prom/node-exporter
+    image: prom/node-exporter:v0.18.1
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -53,7 +53,7 @@ services:
           condition: on-failure
 
   alertmanager:
-    image: prom/alertmanager
+    image: prom/alertmanager:v0.20.0
     ports:
       - 9093:9093
     volumes:
@@ -87,7 +87,7 @@ services:
           condition: on-failure
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:6.5.2
     depends_on:
       - prometheus
     ports:
