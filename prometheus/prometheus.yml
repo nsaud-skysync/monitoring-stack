@@ -7,7 +7,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-      monitor: 'my-project'
+      monitor: 'SkySync'
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
@@ -61,6 +61,9 @@ scrape_configs:
       - 'tasks.node-exporter'
       type: 'A'
       port: 9100
-    
-#     static_configs:
-#          - targets: ['node-exporter:9100']
+
+
+  - job_name: 'teamcity-database'
+    static_configs:
+      - targets: ['10.10.3.183:9182']
+        labels: {'host': 'teamcity-database-server'}

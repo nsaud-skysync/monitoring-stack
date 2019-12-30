@@ -20,3 +20,26 @@ groups:
     annotations:
       summary: "Instance {{ $labels.instance }} under high load"
       description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
+
+
+  - alert: InstanceHighCPU
+    expr: 100 * (1 - avg by(instance) (irate(node_cpu{mode="idle"}[5m]))) > 95
+    for: 10m
+    annotations:
+      description: This device's cpu usage has exceeded the threshold with a value
+        of {{ humanize $value }}%.
+      summary: Instance {{ $labels.instance }} CPU usage is dangerously high
+
+  - alert: InstanceLowMemory
+    expr: node_memory_MemAvailable / 1024 / 1024 < 256
+    for: 1m
+    annotations:
+      description: Only {{ humanize $value }} MB of free memory left
+      summary: 'Instance {{ $labels.instance }}: Memory is low'
+
+  - alert: free_disk
+    expr: node_filesystem_free / node_filesystem_size < 0.2
+    annotations:
+      description: This device's filesystem usage has exceeded the threshold with
+        a value of {{ humanize $value}}%.
+      summary: Instance {{ $labels.instance }} filesystem usage is high
